@@ -26,10 +26,15 @@
 (setq scroll-margin 20)
 ;; These settings reduce the ass of prelude
 (setq prelude-guru nil)
-(disable-theme 'zenburn)
-(setq prelude-whitespace nil)
-(setq prelude-flyspell nil)
 
+(defun prelude-tip-of-the-day ()
+  "redefined as a noop"
+  (interactive))
+
+(disable-theme 'zenburn)
+;; (setq prelude-whitespace nil)
+(setq prelude-flyspell nil)
+(setq whitespace-line-column 140)
 ;; (when (eq system-type 'darwin) ;; mac specific settings
 ;;   (setq mac-option-modifier 'alt)
 ;;   (setq mac-command-modifier 'meta))
@@ -73,8 +78,8 @@
 (defun select-line-and-get-ready-to-select-next-line ()
   "Emulate sublime text select line"
   (interactive)
-  (unless mark-active 
-    (beginning-of-line) 
+  (unless mark-active
+    (beginning-of-line)
     (push-mark (point)
                (setq mark-active t
                      transient-mark-mode t)))
@@ -187,11 +192,15 @@
 
 ;; git-gutter
 (global-git-gutter-mode t)
+(global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
+(global-set-key (kbd "C-x C-r") 'git-gutter:revert-hunk)
+(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
 
 ;;Exit insert mode by pressing j and then k quickly
-(setq key-chord-two-keys-delay 0.2)
+(setq key-chord-two-keys-delay 0.3)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 (key-chord-define evil-normal-state-map "ss" 'save-buffer)
+(key-chord-define evil-normal-state-map "ww" 'save-buffer)
 (key-chord-define evil-normal-state-map "]q" 'next-error)
 (key-chord-define evil-normal-state-map "[q" 'previous-error)
 (key-chord-define evil-normal-state-map "]c" 'git-gutter:next-hunk)
@@ -236,9 +245,11 @@
 (setq ruby-compilation-executable "zeus testrb")
 
 ;; (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet")
+(setq yas/trigger-key "")
 (require 'yasnippet)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets" "~/.emacs.d/vendor/yasnippet/snippets" "~/.emacs.d/plugins/vendor/yasnippet/extras/imported"))
 (yas-global-mode 1)
+(global-set-key (kbd "C-c C-k") 'yas/expand)
 ;; When entering rinari-minor-mode, consider also the snippets in the
 ;; snippet table "rails-mode"
 ;; TODO: fixme - this doesn't seem to work
@@ -246,4 +257,19 @@
           #'(lambda ()
               (setq yas/mode-symbol 'rails-mode)))
 
+(require 'smart-tab)
+(global-smart-tab-mode 1)
 
+; evil plugins
+(add-to-list 'load-path "~/.emacs.d/vendor/evil-plugins")
+
+(require 'evil-little-word)
+;; need to configure these to be awesome like vim
+;; (require 'mode-line-color)
+;; (require 'evil-mode-line)
+(require 'evil-operator-comment)
+(global-evil-operator-comment-mode 1)
+(require 'evil-textobj-between)
+
+(require 'surround)
+(global-surround-mode 1)
