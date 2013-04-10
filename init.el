@@ -197,8 +197,9 @@
 (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
 
 ;;Exit insert mode by pressing j and then k quickly
-(setq key-chord-two-keys-delay 0.3)
+(setq key-chord-two-keys-delay 0.2)
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+;; (key-chord-define evil-normal-state-map "ss" 'save-buffer)
 (key-chord-define evil-normal-state-map "ss" 'save-buffer)
 (key-chord-define evil-normal-state-map "ww" 'save-buffer)
 (key-chord-define evil-normal-state-map "]q" 'next-error)
@@ -264,12 +265,23 @@
 (add-to-list 'load-path "~/.emacs.d/vendor/evil-plugins")
 
 (require 'evil-little-word)
-;; need to configure these to be awesome like vim
-;; (require 'mode-line-color)
-;; (require 'evil-mode-line)
+(require 'evil-textobj-between)
+
+;; default key binding overrides 'C' in vim
+(setq evil-operator-comment-key (kbd "\\"))
 (require 'evil-operator-comment)
 (global-evil-operator-comment-mode 1)
-(require 'evil-textobj-between)
 
 (require 'surround)
 (global-surround-mode 1)
+
+(require 'mode-line-color)
+(require 'evil-mode-line)
+
+(setq evil-mode-line-color
+  `((normal   . "LightGrey")
+    (insert   . "DeepSkyBlue1")
+    (replace  . "pink")
+    (operator . "yellow1")
+    (visual   . "gold")
+    (emacs    . "SeaGreen1")))
