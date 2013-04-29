@@ -22,8 +22,11 @@
 (require 'prelude-xml)
 
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
+(setq electric-pair-mode nil)
 
 (setq scroll-margin 20)
+
 ;; These settings reduce the ass of prelude
 (setq prelude-guru nil)
 
@@ -37,13 +40,26 @@
 (setq whitespace-line-column 140)
 ;; (when (eq system-type 'darwin) ;; mac specific settings
 ;;   (setq mac-option-modifier 'alt)
-;;   (setq mac-command-modifier 'meta))
+;;   (setq mac-command-modifier 'meta)
+;;   (setq ns-function-modifier 'hyper))
+
+;; (setq mac-option-modifier 'alt)
 
 ;; (setq visible-bell nil)
 (defun my-bell ()
   (message "bell"))
 
 (setq ring-bell-function 'ignore)
+
+(setq c-basic-offset 2)
+(setq js-indent-level 2)
+(setq js2-basic-offset 2)
+
+(require 'package)
+(add-to-list 'package-archives
+    '("marmalade" .
+      "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 (defun comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if there's no active region."
@@ -84,7 +100,7 @@
                (setq mark-active t
                      transient-mark-mode t)))
   (forward-line 1))
-(global-set-key (kbd "M-l") 'select-line-and-get-ready-to-select-next-line)
+(global-set-key (kbd "A-l") 'select-line-and-get-ready-to-select-next-line)
 (define-key global-map [(meta shift down)] 'select-line-and-get-ready-to-select-next-line)
 
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
@@ -93,11 +109,15 @@
 (add-hook 'ruby-mode-hook
        (lambda () (rvm-activate-corresponding-ruby)))
 
-(add-hook 'ruby-mode-hook
-        (lambda () ((define-key ruby-mode-map [(ctrl meta u)] 'er/ruby-backward-up)
-                    (define-key ruby-mode-map [(ctrl meta d)] 'er/ruby-backward-down))))
+;; (add-hook 'ruby-mode-hook
+;;         (lambda () ((define-key ruby-mode-map [(ctrl meta u)] 'er/ruby-backward-up)
+;;                     (define-key ruby-mode-map [(ctrl meta d)] 'er/ruby-backward-down))))
 
+;; Better M-x
 (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x C-m") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 (global-set-key (kbd "M-C-=") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-0") 'ace-jump-mode)
@@ -171,20 +191,48 @@
 
 (setq evil-shift-width 2)
 
+(define-key evil-motion-state-map (kbd "C-;") 'evil-repeat-find-char-reverse)
+
 (add-to-list 'load-path "~/.emacs.d/vendor/evil")
 (require 'evil)
 (evil-mode 1)
 (require 'evil-leader)
 (evil-leader/set-leader ",")
-(evil-leader/set-key
-    "," 'evil-buffer)
+;; (evil-leader/set-key
+;;     "," 'evil-buffer)
 
+;; simple emacs editing commands in evil insert mode
+(define-key evil-insert-state-map "\C-e" 'end-of-line)
+(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
+(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
+(define-key evil-insert-state-map "\C-n" 'evil-next-line)
+(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+(define-key evil-insert-state-map "\C-w" 'evil-delete)
+(define-key evil-insert-state-map "\C-y" 'yank)
+(define-key evil-insert-state-map "\C-k" 'kill-line)
+(define-key evil-normal-state-map (kbd "SPC") 'ace-jump-word-mode)
+
+;; yasnippet
+;; Just include the rails snippets for ruby
+;; NB: there are no rails snippets right now
+(add-hook 'ruby-mode-hook '(lambda ()
+                            (make-local-variable 'yas-extra-modes)
+                            (add-to-list 'yas-extra-modes 'rails-mode)
+                            (yas-minor-mode 1)))
+
+;; (yas-global-mode 1)
 (require 'evil-rails)
 
 ;; expand-region
 (add-to-list 'load-path "~/.emacs.d/vendor/expand-region")
 (require 'expand-region)
-;; (global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-,") 'er/expand-region)
+
+;; multiple-cursors
+(add-to-list 'load-path "~/.emacs.s/vendor/mutliple-cursors")
+(require 'multiple-cursors)
+(global-set-key (kbd "C-<") 'mc/mark-next-like-this)
 
 ;; Rinari
 (add-to-list 'load-path "~/.emacs.d/vendor/rinari")
@@ -198,6 +246,15 @@
 
 ;;Exit insert mode by pressing j and then k quickly
 (setq key-chord-two-keys-delay 0.2)
+
+;; These keys are in the global map since they are them most common
+;; way of getting out of non-evil-y buffers (like magit-status) etc.
+;; It might make sense to more key bindings here at some point.
+(key-chord-define global-map ",t" 'projectile-find-file)
+(key-chord-define global-map ",b" 'ido-switch-buffer)
+(key-chord-define global-map ",r" 'prelude-recentf-ido-find-file)
+(key-chord-define global-map ",," 'evil-buffer)
+
 (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
 ;; (key-chord-define evil-normal-state-map "ss" 'save-buffer)
 (key-chord-define evil-normal-state-map "ss" 'save-buffer)
@@ -210,16 +267,17 @@
 (key-chord-mode 1)
 
 (evil-leader/set-key "gs" 'magit-status)
-(evil-leader/set-key "gm" 'rinari-find-model)
-(evil-leader/set-key "gc" 'rinari-find-controller)
-(evil-leader/set-key "gv" 'rinari-find-view)
-(evil-leader/set-key "gj" 'rinari-find-javascript)
-(evil-leader/set-key "gt" 'rinari-find-test)
-(evil-leader/set-key "t" 'projectile-find-file)
-(evil-leader/set-key "b" 'ido-switch-buffer)
-(evil-leader/set-key "r" 'prelude-recentf-ido-find-file)
+(evil-leader/set-key "gm" 'current-project-find-rails-model)
+(evil-leader/set-key "gc" 'current-project-find-rails-controller)
+(evil-leader/set-key "gv" 'current-project-find-rails-view)
+(evil-leader/set-key "gj" 'current-project-find-rails-javascript)
+(evil-leader/set-key "gt" 'current-project-find-rails-test)
 (evil-leader/set-key "e" 'er/expand-region)
+;; (evil-leader/set-key "t" 'projectile-find-file)
+;; (evil-leader/set-key "b" 'ido-switch-buffer)
+;; (evil-leader/set-key "r" 'prelude-recentf-ido-find-file)
 
+(define-key evil-insert-state-map (kbd "C-c C-k") 'yas-expand)
 ;; (add-to-list 'load-path "~/.emacs.d/vendor/emacs-emamux")
 ;; (require 'emamux)
 
@@ -236,41 +294,32 @@
 
 ;; Use Emacs terminfo, not system terminfo
 ;; Seems to let me use my zsh crazy prompt without mucking with it
-(setq system-uses-terminfo nil)
+;; (setq system-uses-terminfo nil)
 
 
 (setq ag-highlight-search t)
 
-
-;; TODO: this doesn't work
-(setq ruby-compilation-executable "zeus testrb")
-
-;; (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet")
-(setq yas/trigger-key "")
-(require 'yasnippet)
-(setq yas-snippet-dirs '("~/.emacs.d/snippets" "~/.emacs.d/vendor/yasnippet/snippets" "~/.emacs.d/plugins/vendor/yasnippet/extras/imported"))
-(yas-global-mode 1)
-(global-set-key (kbd "C-c C-k") 'yas/expand)
-;; When entering rinari-minor-mode, consider also the snippets in the
-;; snippet table "rails-mode"
-;; TODO: fixme - this doesn't seem to work
-(add-hook 'rinari-minor-mode-hook
-          #'(lambda ()
-              (setq yas/mode-symbol 'rails-mode)))
-
-(require 'smart-tab)
-(global-smart-tab-mode 1)
+;; font
+;; (if window-system (set-face-attribute 'default nil :font "Droid Sans Mono-14"))
+(if window-system (set-face-attribute 'default nil :font "Liberation Mono-14"))
+;; (if window-system (set-face-attribute 'default nil :font "Droid Sans Mono-16"))
+;; (if window-system (set-face-attribute 'default nil :font "Source Code Pro-12"))
+;; (if window-system (set-face-attribute 'default nil :font "Monaco-16"))
+;; (if window-system (set-face-attribute 'default nil :font "Consolas-16"))
+;; (if window-system (set-face-attribute 'default nil :font "Terminus-14"))
+;; (if window-system (set-face-attribute 'default nil :font "Source Code Pro-14"))
 
 ; evil plugins
 (add-to-list 'load-path "~/.emacs.d/vendor/evil-plugins")
 
-(require 'evil-little-word)
-(require 'evil-textobj-between)
+;; I don't think these are adding anything
+;; (require 'evil-little-word)
+;; (require 'evil-textobj-between)
 
 ;; default key binding overrides 'C' in vim
-(setq evil-operator-comment-key (kbd "\\"))
-(require 'evil-operator-comment)
-(global-evil-operator-comment-mode 1)
+;; (setq evil-operator-comment-key (kbd "\\"))
+;; (require 'evil-operator-comment)
+;; (global-evil-operator-comment-mode 1)
 
 (require 'surround)
 (global-surround-mode 1)
@@ -278,10 +327,77 @@
 (require 'mode-line-color)
 (require 'evil-mode-line)
 
+;; Light background modeline
 (setq evil-mode-line-color
   `((normal   . "LightGrey")
     (insert   . "DeepSkyBlue1")
-    (replace  . "pink")
+    (replace  . "yellow1")
     (operator . "yellow1")
     (visual   . "gold")
-    (emacs    . "SeaGreen1")))
+    (emacs    . "green1")))
+
+;; get rid of the prelude version
+(define-key prelude-mode-map (kbd "C-c o") nil)
+(global-set-key (kbd "C-c o") 'occur)
+
+(require 'rhtml-mode)
+(add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
+
+
+;; ;; (require 'smart-tab)
+;; ;; (global-smart-tab-mode 1)
+;; (add-to-list 'load-path "~/.emacs.d/vendor/magnars")
+;; (require 'setup-hippie)
+;; ;; Completion that uses many different methods to find options.
+;; ;; These require new bindings for evil
+;; (global-set-key (kbd "C-.") 'hippie-expand-no-case-fold)
+;; (global-set-key (kbd "C-:") 'hippie-expand-lines)
+;; curious how much auto-complete mode slows things down
+(require 'auto-complete)
+(global-auto-complete-mode)
+
+(defun zeus-testrb ()
+  "Compiles the current ruby file with zeus from the project root"
+  (interactive)
+  (let ((curdir default-directory))
+    (message curdir)
+    (cd (projectile-project-root))
+    (compile (concat "zeus testrb " (buffer-file-name)))
+    (cd curdir)))
+
+(add-to-list 'load-path "~/.emacs.d/vendor/emacs-emamux")
+(require 'emamux)
+
+;; Load Perspective
+;; (require 'perspective)
+;; Toggle the perspective mode
+;; (persp-mode t)
+
+;; (add-to-list 'load-path "~/.emacs.d/vendor/workgroups.el")
+;; (require 'workgroups)
+;; (setq wg-prefix-key (kbd "C-c w"))
+;; (workgroups-mode 1)
+;; (setq wg-morph-on nil)
+
+(desktop-save-mode 1)
+
+ (add-hook 'term-mode-hook
+ 		  (function
+ 		   (lambda ()
+                         (setq-local scroll-margin 0))))
+
+ (add-hook 'eshell-mode-hook
+ 		  (function
+ 		   (lambda ()
+                         (setq-local scroll-margin 0))))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/vendor/color-theme-github")
+
+(defun p8 ()
+  (interactive)
+  (desktop-change-dir "~/par8o/par8o"))
+
+
+(add-hook 'org-mode-hook (function (lambda () (define-key org-mode-map [(tab)] 'org-cycle))))
+
+(define-key prelude-mode-map (kbd "C-c t") 'eshell)
