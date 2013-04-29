@@ -191,7 +191,6 @@
 
 (setq evil-shift-width 2)
 
-(define-key evil-motion-state-map (kbd "C-;") 'evil-repeat-find-char-reverse)
 
 (add-to-list 'load-path "~/.emacs.d/vendor/evil")
 (require 'evil)
@@ -212,6 +211,8 @@
 (define-key evil-insert-state-map "\C-y" 'yank)
 (define-key evil-insert-state-map "\C-k" 'kill-line)
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-word-mode)
+
+(define-key evil-motion-state-map (kbd "C-;") 'evil-repeat-find-char-reverse)
 
 ;; yasnippet
 ;; Just include the rails snippets for ruby
@@ -328,13 +329,13 @@
 (require 'evil-mode-line)
 
 ;; Light background modeline
-(setq evil-mode-line-color
-  `((normal   . "LightGrey")
-    (insert   . "DeepSkyBlue1")
-    (replace  . "yellow1")
-    (operator . "yellow1")
-    (visual   . "gold")
-    (emacs    . "green1")))
+;; (setq evil-mode-line-color
+;;   `((normal   . "LightGrey")
+;;     (insert   . "DeepSkyBlue1")
+;;     (replace  . "yellow1")
+;;     (operator . "yellow1")
+;;     (visual   . "gold")
+;;     (emacs    . "green1")))
 
 ;; get rid of the prelude version
 (define-key prelude-mode-map (kbd "C-c o") nil)
@@ -381,15 +382,15 @@
 
 (desktop-save-mode 1)
 
- (add-hook 'term-mode-hook
- 		  (function
- 		   (lambda ()
+(add-hook 'term-mode-hook
+          (function
+           (lambda ()
                          (setq-local scroll-margin 0))))
 
- (add-hook 'eshell-mode-hook
- 		  (function
- 		   (lambda ()
-                         (setq-local scroll-margin 0))))
+(add-hook 'eshell-mode-hook
+          (function
+           (lambda ()
+             (setq-local scroll-margin 0))))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/vendor/color-theme-github")
 
