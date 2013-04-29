@@ -334,8 +334,17 @@
 ;;     (insert   . "DeepSkyBlue1")
 ;;     (replace  . "yellow1")
 ;;     (operator . "yellow1")
-;;     (visual   . "gold")
+;;     (visual  . "gold")
 ;;     (emacs    . "green1")))
+
+;; Dark background modeline
+(setq evil-mode-line-color
+  `((normal   . "gray14")
+    (insert   . "MidnightBlue")
+    (replace  . "darkgoldenrod")
+    (operator . "darkgoldenrod")
+    (visual   . "DarkSlateGrey")
+    (emacs    . "DarkOliveGreen")))
 
 ;; get rid of the prelude version
 (define-key prelude-mode-map (kbd "C-c o") nil)
