@@ -25,3 +25,23 @@
 ;; (global-git-gutter-mode t)
 ;; (setq visible-bell t)
 
+;; ;; (global-smart-tab-mode 1)
+;; (add-to-list 'load-path "~/.emacs.d/vendor/magnars")
+;; (require 'setup-hippie)
+;; ;; Completion that uses many different methods to find options.
+;; ;; These require new bindings for evil
+;; (global-set-key (kbd "C-.") 'hippie-expand-no-case-fold)
+;; (global-set-key (kbd "C-:") 'hippie-expand-lines)
+;; curious how much auto-complete mode slows things down
+
+
+;; Load Perspective
+;; (require 'perspective)
+;; Toggle the perspective mode
+;; (persp-mode t)
+
+;; (add-to-list 'load-path "~/.emacs.d/vendor/workgroups.el")
+;; (require 'workgroups)
+;; (setq wg-prefix-key (kbd "C-c w"))
+;; (workgroups-mode 1)
+;; (setq wg-morph-on nil)

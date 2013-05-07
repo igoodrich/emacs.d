@@ -1,0 +1,67 @@
+* minor fix:
+** exclude certain modes/buffers from evil mode
+  - dired
+  - rinari console
+* investigate
+  escreen
+  elscreen (or other)
+  deft.el -- like notational velocity
+* install
+  http://www.emacswiki.org/emacs/TransposeFrame
+* fix:
+- function that inserts vertical space between def/ends and also contexts/shoulds/tests but only when needed
+
+* get working:
+learn about eshell
+bookmarks, bookmarks+
+
+* coding projects:
+  pr/find-alternate-file
+  pr/find-related-file
+  pr/last-migration
+  pr/previous-migration
+  pr/next-migration
+  pr/find-model
+  etc
+** evil text objexts mostly:
+  - ruby block
+  - ruby method
+  - argument
+  - function/method
+  - add space above/below line
+  - fix comment/uncomment region (turn into text oject)
+  - get working versions of ,gm etc (go to model)
+  - word boundary includes '_' -- maybe includes all symbol chars
+  - complete history across files (forwad/back)
+* packages that should be written
+package to allow the use of snipmate snippets AS IS
+package that fully emmulates rails.vim maybe in pieces
+(part of emacs.rails)
+rails.vim.emacs
+rails-navigation
+	controllers, models, views, etc, plus last migration
+projectile-rails?
+factory girl compleitions type name of factory then hit key and get either build or create
+make perspective.el persist projects -- duh
+persp mode does not automatically track buffers -- wtf
+
+
+list of projects and files so that you can switch to a project and be in it
+
+
+run test that puts compilation window small and on bottom right or bottom left as per config
+run test that runs last test if not in a test buffer
+
+gem browser
+
+* remarkably cool things:
+- both query/replace styles
+- vim version does it inline
+- window history
+- vim "emulation" but extensible like vim
+- calling emacs elisp functions from eshell
+* failed (for now)
+- sessions (desktop is great, winner is great, workgroups sucks, perspectives aren't persistant -- wtf)
+- see if persp can be made to work
+* learned:
+c-x, c-j  - dired-jump -- awesome jump from file to dired with file selected
