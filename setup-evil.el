@@ -1,10 +1,10 @@
 (require 'key-chord)
 (require 'evil)
 (require 'evil-leader)
-(require 'mode-line-color)
-(require 'evil-mode-line)
-(require 'evil-textobj-between)
-(require 'surround)
+;; (require 'mode-line-color)
+;; (require 'evil-mode-line)
+;; (require 'evil-textobj-between)
+;; (require 'surround)
 
 (setq evil-shift-width 2)
 
@@ -19,33 +19,52 @@
 ;; (require 'evil-operator-comment)
 ;; (global-evil-operator-comment-mode 1)
 
-(global-surround-mode 1)
 
-;; Light background modeline
-;; (setq evil-mode-line-color
-;;   `((normal   . "LightGrey")
-;;     (insert   . "DeepSkyBlue1")
-;;     (replace  . "yellow1")
-;;     (operator . "yellow1")
-;;     (visual  . "gold")
-;;     (emacs    . "green1")))
 
-;; Dark background modeline
-(setq evil-mode-line-color
-  `((normal   . "gray14")
-    (insert   . "SteelBlue")
-    (replace  . "darkgoldenrod")
-    (operator . "darkgoldenrod")
-    (visual   . "DarkSlateGrey")
-    (emacs    . "DarkOliveGreen")))
+;; (defun set-mode-to-default-emacs (mode)
+;;   (evil-set-initial-state mode 'emacs))
 
-(defun set-mode-to-default-emacs (mode)
-  (evil-set-initial-state mode 'emacs))
+;; (mapcar 'set-mode-to-default-emacs
+;;         '(dired
+;;           magit-branch-manager-mode
+;;           magit-commit-mode
+;;           magit-log-mode
+;;           themes-mode
+;;           log-view-mode
+;;           deft-mode))
 
-(mapcar 'set-mode-to-default-emacs
-        '(dired
-          magit-branch-manager-mode
-          magit-commit-mode
-          magit-log-mode
-          log-view-mode
-          deft-mode))
+(setq evil-default-cursor t)
+;; evil-bigword is set with customize
+;;(setq evil-bigword "a-zA-Z0-9\-\_\?\$")
+
+(defun evil-mode-line-for-light ()
+  (interactive)
+  (setq evil-mode-line-color
+        `((normal   . "LightGrey")
+          (insert   . "DeepSkyBlue1")
+          (replace  . "yellow1")
+          (operator . "yellow1")
+          (visual  . "gold")
+          (emacs    . "green1"))))
+
+(defun evil-mode-line-for-dark ()
+  (interactive)
+  (setq evil-mode-line-color
+        `((normal   . "gray14")
+          (insert   . "SteelBlue")
+          (replace  . "darkgoldenrod")
+          (operator . "darkgoldenrod")
+          (visual   . "DarkSlateGrey")
+          (emacs    . "DarkOliveGreen"))))
+
+(defun evil-mode-line-for-monokai ()
+  (interactive)
+  (setq evil-mode-line-color
+        `((normal   . "LightGrey")
+          (insert   . "SteelBlue")
+          (replace  . "darkgoldenrod")
+          (operator . "darkgoldenrod")
+          (visual   . "DarkSlateGrey")
+          (emacs    . "DarkOliveGreen"))))
+
+(evil-mode-line-for-dark)

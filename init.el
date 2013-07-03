@@ -1,16 +1,17 @@
-;; (setq debug-on-error 't)
+(setq debug-on-error 't)
 (setq debug-on-error nil)
 (add-to-list 'load-path "~/.emacs.d/vendor/evil-plugins")
+(add-to-list 'load-path "~/code/projectile-rails")
 
 (require 'dash)
-(require 'js2-mode)
-(require 'rhtml-mode)
 (require 'expand-region)
 (require 'multiple-cursors)
 (require 'rinari)
 (require 'auto-complete)
 (require 'escreen)
 (escreen-install)
+
+(require 'projectile-rails)
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -28,8 +29,6 @@
 (add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 (setq set-mark-command-repeat-pop t)
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
 
 (setq ag-highlight-search t)
 
@@ -48,3 +47,5 @@
              (define-key evil-normal-state-map (kbd "<tab>") 'org-cycle)))
 
 (setq blink-cursor-mode 't)
+
+(set-cursor-color "Red")
