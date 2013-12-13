@@ -1,8 +1,9 @@
-(setq debug-on-error 't)
+;; (setq debug-on-error 't)
 (setq debug-on-error nil)
 (add-to-list 'load-path "~/.emacs.d/vendor/evil-plugins")
-(add-to-list 'load-path "~/code/projectile-rails")
+(add-to-list 'load-path "~/code/rails-around")
 
+(require 'uniquify)
 (require 'dash)
 (require 'expand-region)
 (require 'multiple-cursors)
@@ -11,7 +12,7 @@
 (require 'escreen)
 (escreen-install)
 
-(require 'projectile-rails)
+(require 'rails-around)
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -36,7 +37,7 @@
 
 ;; get rid of the prelude version
 (global-auto-complete-mode)
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 (defun p8 ()
   (interactive)

@@ -4,7 +4,7 @@
   (let ((curdir default-directory))
     (message curdir)
     (cd (projectile-project-root))
-    (cond ((pr/buffer-rails-test?)
+    (cond ((ra/buffer-rails-test?)
            (compile (concat "zeus testrb " (buffer-file-name)))
            (setq zeus-testrb-last-file-name (buffer-file-name)))
           (zeus-testrb-last-file-name

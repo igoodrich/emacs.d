@@ -28,6 +28,6 @@
 
 (disable-theme 'zenburn)
 (setq prelude-flyspell nil)
-(setq whitespace-line-column 140)
+(setq whitespace-line-column 100)
 
 (define-key prelude-mode-map (kbd "C-c t") 'eshell)

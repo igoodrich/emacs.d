@@ -67,4 +67,4 @@
           (visual   . "DarkSlateGrey")
           (emacs    . "DarkOliveGreen"))))
 
-(evil-mode-line-for-dark)
+;; (evil-mode-line-for-dark)
